@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Revellion Technologies</title>
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body>
+    <div class="container">
+        <img class="logo" src="static/images/R.svg" alt="" srcset="">
+        <p class="terminal-text" id="loading">Please wait</p>
+    </div>
+</body>
+<script>
+    let loadingText = document.getElementById("loading");
+    setInterval(() => {
+        if (loadingText.innerText.includes("...")) loadingText.innerText = "Please wait";
+        else {
+            loadingText.innerText += "."
+        }
+    }, 1000)
+</script>
