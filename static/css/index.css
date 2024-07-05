@@ -8,11 +8,14 @@ body {
   }
 
 .container {
-    height: 100vh;
+    display: grid;
+    height: 100%;
     text-align: center;
     align-items: center;
     justify-content: center;
-    padding: 10vh;
+    padding-top: 40vh;
+    min-width:max-content
+    
 }
 
 .terminal-text {
@@ -21,4 +24,36 @@ body {
     font-weight: 400;
     font-size: 70px;
     margin: 0;
+}
+
+.password-field, .submit {
+    background-color: black;
+    /* border: 10px; */
+    border-color:white;
+}
+
+.submit {
+    color:white;
+}
+
+.side-by-side {
+    /* margin: auto; */
+    display: flex; 
+    /* grid-template-columns: 1fr 1fr;  */
+    grid-gap: 20px; 
+    /* border: 1px solid black;  */
+    /* width: 34;  */
+
+}
+
+.side1, .side2{
+    /* margin: 10px;  */
+    /* border-bottom: 1; */
+    /* size */
+    width: 95%;
+    text-align: left;
+}
+
+.side1 {
+    width: 5%;
 }
