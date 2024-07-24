@@ -10,7 +10,6 @@ body {
 
 .container {
     display: grid;
-    /* height: 100%; */
     text-align: center;
     align-items: center;
     justify-content: center;
