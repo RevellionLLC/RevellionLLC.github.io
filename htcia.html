@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Revellion Technologies 2024</title>
+    <link rel="icon" href="static/images/R.svg"/>
+    <link rel="stylesheet" href="static/css/index.css">
+    <meta property="og:title" content="Revellion Technologies" />
+    <meta property="og:image" content="https://github.com/RevellionLLC/RevellionLLC.github.io/blob/7f49adba674d5b28242607b14b519a1347fdab8d/static/images/R.png?raw=true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+            const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+            return hashHex;
+        }
+
+        async function checkPassword(){
+            // Function to set a cookie
+            function setCookie(cookieName, cookieValue, expirationDays) {
+                var expires = "";
+                if (expirationDays) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (expirationDays * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = cookieName + "=" + encodeURIComponent(cookieValue) + expires + "; path=/";
+            }
+
+            function getCookie(cookieName) {
+                var name = cookieName + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var cookieArray = decodedCookie.split(';');
+                for (var i = 0; i < cookieArray.length; i++) {
+                    var cookie = cookieArray[i].trim();
+                    if (cookie.indexOf(name) == 0) {
+                        return cookie.substring(name.length, cookie.length);
+                    }
+                }
+                return "";
+            }
+
+
+
+            function encryptText(text, passphrase) {
+                return CryptoJS.AES.encrypt(text, passphrase).toString();
+            }
+
+            function decryptText(ciphertext, passphrase) {
+                try{
+                    let bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+                    return bytes.toString(CryptoJS.enc.Utf8);
+                }catch{
+                    return "Password Invalid.";
+                }
+            }
+
+            let outputField  = document.getElementById("output");
+            let password = document.getElementById("password").value;
+            let passwordHash = await sha256(password);
+            let passwordBook = {
+                "1bda109637fd72f9bc0491720fb3c714c10c3c474aaf0c030e0b2c23cb189c21": "1|U2FsdGVkX18hsV8xmKhlwwAf/pq9Y+NQ+llxI9ll+odiBkkRqd/5U5iCKgRuHS0t07UyoCIL6KDOd1epvqiVNbG7S7Ou4WamG28x/3z6iOQ=",
+                "315548fb15c6d0992f01d8944d37233ee51e63c6d179204796c48f4c551530ee": "2|U2FsdGVkX1+mPIG2YMZdVX2FmWCLikIv1L1fJyGQyBiR5bwMwW+QVFZT6gdnai4JUSqb9QzKwDfcPIqekIKjU88sz9eml2TsC9K/N2s9haM="
+            }
+
+            let information = "Password Invalid."
+            let data = passwordBook[passwordHash]
+            let index = 0
+            if (data){
+                index = data.split("|")[0]
+                data = data.split("|")[1]
+            }
+            information = decryptText(data, password)
+            
+            if (information != "Password Invalid."){
+                setCookie(`password${index}`, password, 1)
+            }
+
+            if (getCookie("password1") && getCookie("password2")){
+                information = information.concat("\n")
+                information = information.concat(decryptText("U2FsdGVkX1/DOgRm5i2eY7HGK2y+EP4gLGKDV9UPVZckAaEqlzd4LODmGMUPINY1", getCookie("password1").concat(getCookie("password2"))))
+            }
+
+            
+
+            outputField.textContent = "";
+
+            function typeMessage(index){
+                if (index < information.length){
+                    outputField.textContent += information.charAt(index);
+                    setTimeout(()=> {
+                        typeMessage(index+1);
+                    }, 100);
+                }
+            }
+            
+            typeMessage(0);
+        }
+    </script>
+    </head>
+
+<body>
+    <div class="container">
+        <!-- <img class="logo" src="static/images/R.svg" alt="" srcset=""> -->
+        <div class="side-by-side">
+            <p class="side1 terminal-text" id="title">&gt;</p>
+            <input type="password" class="side2 terminal-text password-field" id="password">
+        </div>
+        <br>
+        <button class="terminal-text submit" id="submitButton" onclick="checkPassword()">Submit</button>
+        
+    </div>
+    <p class="terminal-text output" id="output"></p>
+</body>
+
+<script>
+    let loadingText = document.getElementById("title");
+    setInterval(() => {
+        loadingText.style.color == "black" ? loadingText.style.color = "white" : loadingText.style.color = "black";
+    }, 500)
+
+    const inputField = document.getElementById('password');
+    const submitButton = document.getElementById('submitButton');
+
+
+    inputField.addEventListener('keypress', function(event) {
+    // Check if the Enter key was pressed (key code 13)
+        if (event.keyCode === 13) {
+            // Prevent the default action of the Enter key press (form submission)
+            event.preventDefault();
+            submitButton.click();
+
+            submitButton.focus();
+        }
+    });
+
+</script>
