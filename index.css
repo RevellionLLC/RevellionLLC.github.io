@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    height: 100vh;
+    background-color: black
+}
+
+@font-face {
+    font-family: 'VT323';
+    src: url('VT323-Regular.ttf') format('truetype');
+  }
+
+.container {
+    display: grid;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40vh;
+    min-width:max-content
+    
+}
+
+.terminal-text {
+    color:white;
+    font-family: "VT323", monospace;
+    font-weight: 400;
+    font-size: 70px;
+    margin: 0;
+}
+.output {
+    overflow-y: auto;
+    text-align: center;
+}
+
+.password-field, .submit {
+    background-color: black;
+    border-color:white;
+}
+
+.submit {
+    color:white;
+}
+
+.side-by-side {
+    display: flex; 
+    grid-gap: 20px; 
+}
+
+.side1, .side2{
+    width: 95%;
+    text-align: left;
+}
+
+.side1 {
+    width: 5%;
+}
